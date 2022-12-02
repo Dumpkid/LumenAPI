@@ -25,3 +25,4 @@ $router->get('/buku', 'BukuController@show');
 $router->post('/buku', 'BukuController@create');
 $router->get('/buku/{id}', 'BukuController@showId');
 $router->delete('/buku/{id}', 'BukuController@delete');
+$router->put('/buku/{id}', 'BukuController@update');

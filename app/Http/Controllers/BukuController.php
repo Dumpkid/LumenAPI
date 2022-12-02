@@ -22,14 +22,14 @@ class BukuController extends Controller
         $count = $buku->count();
         if ($count >= 1){
             return response([
-                'Success' => true,
-                'Message' => 'Data Buku',
+                'success' => true,
+                'message' => 'Data Buku',
                 'data' => $buku
             ],200);
         } else {
             return response([
-                'Success' => false,
-                'Message' => 'Data Buku Kosong',
+                'success' => false,
+                'message' => 'Data Buku Kosong',
                 'data' => ''
             ],404);
         }
@@ -41,13 +41,13 @@ class BukuController extends Controller
 
         if($buku){
             return response([
-                'Success' => true,
+                'success' => true,
                 'message' => 'Data ditemukan!',
                 'data' => $buku
             ],200);
         } else {
             return response([
-                'Success' => false,
+                'success' => false,
                 'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
@@ -56,7 +56,7 @@ class BukuController extends Controller
 
     public function create(Request $request)
     {
-        $idBuku = uniqid("BK");
+        $idBuku = substr(uniqid("BK"),0,7);
         $judul = $request->input('judul');
         $pengarang = $request->input('pengarang');
         $penerbit = $request->input('penerbit');
@@ -103,6 +103,27 @@ class BukuController extends Controller
                 ],400);
             }
         }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $input = $request->all();
+        $buku = Buku::where('id', $id)->first();
+        if (!$buku) {
+            return response([
+            'success' => false,
+            'message' => 'ID tidak ditemukan!',
+            'data' => '',
+            ],404);
+        } else {
+            $buku->fill($input);
+            return response([
+                'success' => true,
+                'message' => 'data input',
+                'data' => $buku,
+            ],201);
+        }
+        
     }
 
     public function delete($id)
