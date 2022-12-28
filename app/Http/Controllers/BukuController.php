@@ -56,14 +56,14 @@ class BukuController extends Controller
 
     public function create(Request $request)
     {
-        $idBuku = substr(uniqid("BK"),0,7);
+        $kode_buku = substr(uniqid("BK"),0,7);
         $judul = $request->input('judul');
-        $pengarang = $request->input('pengarang');
+        $penulis = $request->input('penulis');
         $penerbit = $request->input('penerbit');
         $tahun_terbit = $request->input('tahun_terbit');
         $edisi = $request->input('edisi');
         $halaman = $request->input('halaman');
-        $jenis = $request->input('jenis');
+        $id_jenis = $request->input('id_jenis');
         $isbn = $request->input('isbn');
         $harga = $request->input('harga');
         $sumber = $request->input('sumber');
@@ -77,14 +77,14 @@ class BukuController extends Controller
             ],400);
         } else {
             $buku = Buku::create([
-                'idBuku' => $idBuku,
+                'kode_buku' => $kode_buku,
                 'judul' => $judul,
-                'pengarang' => $pengarang,
+                'penulis' => $penulis,
                 'penerbit' => $penerbit,
                 'tahun_terbit' => $tahun_terbit,
                 'edisi' => $edisi,
                 'halaman' => $halaman,
-                'jenis' => $jenis,
+                'id_jenis' => $id_jenis,
                 'isbn' => $isbn,
                 'harga' => $harga,
                 'sumber' => $sumber,

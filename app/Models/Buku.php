@@ -8,6 +8,6 @@ class Buku extends Model
 {
     protected $table = 'buku';
     protected $fillable = [
-        'idBuku', 'judul', 'pengarang', 'penerbit', 'tahun_terbit', 'edisi', 'halaman', 'jenis', 'isbn', 'harga', 'sumber', 'kondisi'
+        'kode_buku', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'edisi', 'halaman', 'jenis', 'isbn', 'harga', 'sumber', 'kondisi'
     ];
 }

@@ -18,9 +18,11 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post('/register', 'AuthController@register');
-$router->post('/login', 'AuthController@login');
-$router->get('/user/{id}', 'UserController@show');
+$router->post('/daftar_petugas', 'AuthController@registrasi_petugas');
+$router->post('/login_petugas', 'AuthController@login_petugas');
+
+$router->get('/petugas/{id}', 'PetugasController@show');
+
 $router->get('/buku', 'BukuController@show');
 $router->post('/buku', 'BukuController@create');
 $router->get('/buku/{id}', 'BukuController@showId');

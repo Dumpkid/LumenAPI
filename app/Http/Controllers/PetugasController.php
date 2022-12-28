@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+use App\Models\Petugas;
 
-class UserController extends Controller
+class PetugasController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -17,13 +17,13 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $petugas = Petugas::find($id);
 
-        if($user){
+        if($petugas){
             return response([
                 'success' => true,
                 'message' => 'User ditemukan!',
-                'data' => $user
+                'data' => $petugas
             ],200);
         } else {
             return response([

@@ -14,19 +14,20 @@ return new class extends Migration
     public function up()
     {
         Schema::create('buku', function (Blueprint $table){
-            $table->increments('id');
-            $table->string('idBuku')->unique()->nullable();
+            $table->increments('id_buku');
+            $table->string('kode_buku')->unique()->nullable();
             $table->string('judul');
-            $table->string('pengarang');
-            $table->string('penerbit');
+            $table->integer('id_penulis');
+            $table->integer('id_penerbit');
             $table->year('tahun_terbit');
             $table->string('edisi');
             $table->integer('halaman');
-            $table->string('jenis');
+            $table->integer('id_jenis');
             $table->string('isbn')->unique();
             $table->integer('harga');
-            $table->enum('sumber', ['pembelian', 'hadiah']);
+            $table->enum('sumber', ['Pembelian', 'Hadiah']);
             $table->enum('kondisi',['Baik', 'Kurang Baik']);
+            $table->integer('stok');
             $table->timestamps();
         });
     }
