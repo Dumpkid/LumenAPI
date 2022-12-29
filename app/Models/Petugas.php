@@ -19,7 +19,7 @@ class Petugas extends Model implements AuthenticatableContract, AuthorizableCont
      * @var string[]
      */
     protected $fillable = [
-        'nama_petugas', 'jabatan', 'telp_petugas', 'alamat_petugas', 'password', 'api_token'
+        'nama_petugas', 'jabatan', 'alamat_petugas', 'username', 'password', 'api_token'
     ];
 
     /**
@@ -30,4 +30,8 @@ class Petugas extends Model implements AuthenticatableContract, AuthorizableCont
     protected $hidden = [
         'password', 'api_token'
     ];
+    protected $primaryKey = 'id_petugas';
+    protected $table = 'petugas';
+
+
 }

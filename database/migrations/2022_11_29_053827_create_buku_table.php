@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('buku', function (Blueprint $table){
             $table->increments('id_buku');
-            $table->string('kode_buku')->unique()->nullable();
+            $table->string('kode_buku')->unique()->notnull();
             $table->string('judul');
             $table->integer('id_penulis');
             $table->integer('id_penerbit');

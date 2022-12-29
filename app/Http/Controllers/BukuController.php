@@ -58,8 +58,8 @@ class BukuController extends Controller
     {
         $kode_buku = substr(uniqid("BK"),0,7);
         $judul = $request->input('judul');
-        $penulis = $request->input('penulis');
-        $penerbit = $request->input('penerbit');
+        $id_penulis = $request->input('id_penulis');
+        $id_penerbit = $request->input('id_penerbit');
         $tahun_terbit = $request->input('tahun_terbit');
         $edisi = $request->input('edisi');
         $halaman = $request->input('halaman');
@@ -68,19 +68,20 @@ class BukuController extends Controller
         $harga = $request->input('harga');
         $sumber = $request->input('sumber');
         $kondisi = $request->input('kondisi');
+        $stok = $request->input('stok');
 
-        $cek = Buku::where('isbn',$isbn)->first();
-        if ($cek){
+        $cek_isbn = Buku::where('isbn',$isbn)->first();
+        if ($cek_isbn){
             return response([
                 'Success' => false,
-                'message' => 'No ISBN sudah terdaftar!'
+                'message' => 'No ISBN sudah terdaftar'
             ],400);
-        } else {
+        }else {
             $buku = Buku::create([
                 'kode_buku' => $kode_buku,
                 'judul' => $judul,
-                'penulis' => $penulis,
-                'penerbit' => $penerbit,
+                'id_penulis' => $id_penulis,
+                'id_penerbit' => $id_penerbit,
                 'tahun_terbit' => $tahun_terbit,
                 'edisi' => $edisi,
                 'halaman' => $halaman,
@@ -88,7 +89,8 @@ class BukuController extends Controller
                 'isbn' => $isbn,
                 'harga' => $harga,
                 'sumber' => $sumber,
-                'kondisi' => $kondisi
+                'kondisi' => $kondisi,
+                'stok' => $stok
             ]);
     
             if ($buku){
@@ -108,18 +110,18 @@ class BukuController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $buku = Buku::where('id', $id)->first();
+        $buku = Buku::where('id_buku', $id)->first();
         if (!$buku) {
             return response([
             'success' => false,
-            'message' => 'ID tidak ditemukan!',
+            'message' => 'Data tidak ditemukan!',
             'data' => '',
             ],404);
         } else {
             $buku->fill($input);
             return response([
                 'success' => true,
-                'message' => 'data input',
+                'message' => 'Update berhasil',
                 'data' => $buku,
             ],201);
         }
@@ -129,7 +131,6 @@ class BukuController extends Controller
     public function delete($id)
     {
         $buku = Buku::find($id)->delete();
-        Buku::truncate();
         if ($buku){
             return response([
                 'Success' => true,

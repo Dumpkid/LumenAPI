@@ -18,16 +18,15 @@ class Anggota extends Model implements AuthenticatableContract, AuthorizableCont
      *
      * @var string[]
      */
-    protected $fillable = [
-        'kode_anggota', 'nama_anggota', 'jenis_kelamin', 'email', 'password', 'api_token'
-    ];
+    protected $fillable = ['kode_anggota', 'nama_anggota', 'jenis_kelamin', 'email', 'password', 'api_token'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var string[]
      */
-    protected $hidden = [
-        'password', 'api_token'
-    ];
+    protected $table = 'anggota';
+    protected $hidden = ['password', 'api_token'];
+    protected $primaryKey = 'id_anggota';
+
 }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->increments('id_petugas');
             $table->string('nama_petugas');
             $table->string('jabatan');
-            $table->integer('telp_petugas');
             $table->string('alamat_petugas');
+            $table->string('username')->unique();
             $table->string('password');
             $table->string('api_token')->nullable();
             $table->timestamps();

@@ -10,4 +10,6 @@ class Jenis_Buku extends Model
     protected $fillable = [
         'jenis_buku',
     ];
+    protected $primaryKey = 'id_jenis';
+
 }

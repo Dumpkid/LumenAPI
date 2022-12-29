@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rak extends Model
 {
     protected $table = 'rak';
-    protected $fillable = [
-        'nama_rak', 'lokasi_rak', 'id_buku'
-    ];
+    protected $fillable = ['nama_rak', 'lokasi_rak', 'id_buku'];
+    protected $primaryKey = 'id_rak';
+
 }

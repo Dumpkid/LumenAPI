@@ -1,6 +1,9 @@
 <?php
 
 /** @var \Laravel\Lumen\Routing\Router $router */
+
+use App\Http\Controllers\AnggotaController;
+use App\Models\Anggota;
 use Illuminate\Support\Str;
 
 /*
@@ -28,3 +31,9 @@ $router->post('/buku', 'BukuController@create');
 $router->get('/buku/{id}', 'BukuController@showId');
 $router->delete('/buku/{id}', 'BukuController@delete');
 $router->put('/buku/{id}', 'BukuController@update');
+
+$router->get('/anggota', 'AnggotaController@show');
+$router->get('/anggota/{id}', 'AnggotaController@showId');
+$router->put('/anggota/{id}', 'AnggotaController@update');
+$router->delete('anggota/{id}', 'AnggotaController@delete');
+

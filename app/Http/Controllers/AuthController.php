@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -13,12 +14,14 @@ class AuthController extends Controller
     {
         $nama_petugas = $request->input('nama_petugas');
         $jabatan = $request->input('jabatan');
+        $alamat_petugas = $request->input('alamat_petugas');
         $email = $request->input('email');
         $password = Hash::make($request->input('password'));
 
         $register = Petugas::create([
-            'nama' => $nama_petugas,
+            'nama_petugas' => $nama_petugas,
             'jabatan' => $jabatan,
+            'alamat_petugas' => $alamat_petugas,
             'email' => $email,
             'password' => $password,
         ]);
@@ -38,6 +41,44 @@ class AuthController extends Controller
         }
     }
 
+    public function login_petugas(Request $request)
+    {
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        $petugas = Petugas::where('username', $username)->first();
+        if(!$petugas){
+            return response([
+                'success' => false,
+                'message' => 'Login Gagal!',
+                'data' => 'username belum terdaftar.'
+            ],404);
+        } else {
+            if (Hash::check($password, $petugas->password)){
+                $apiToken = base64_encode(Str::random(15));
+    
+                $petugas->update([
+                    'api_token' => $apiToken
+                ]);
+    
+                return response([
+                    'success' => true,
+                    'message' => 'Login Berhasil!',
+                    'data' => [
+                        'user' => $petugas,
+                        'api_token' => $apiToken
+                    ]
+                ],201);
+            } else {
+                return response([
+                    'success' => false,
+                    'message' => 'Login Gagal!',
+                    'data' => 'Password yang anda masukkan salah.'
+                ],404);
+            }
+        }
+    }
+
     public function registrasi_anggota(Request $request)
     {
         $kode_anggota = $request->input('kode_anggota');
@@ -46,7 +87,7 @@ class AuthController extends Controller
         $email = $request->input('email');
         $password = Hash::make($request->input('password'));
 
-        $register = Petugas::create([
+        $register = Anggota::create([
             'kode_anggota' => $kode_anggota,
             'nama_anggota' => $nama_anggota,
             'jenis_kelamin'=>$jenis_kelamin,
@@ -69,23 +110,23 @@ class AuthController extends Controller
         }
     }
 
-    public function login_petugas(Request $request)
+    public function login_anggota(Request $request)
     {
         $email = $request->input('email');
         $password = $request->input('password');
 
-        $user = Petugas::where('email', $email)->first();
-        if(!$user){
+        $anggota = Anggota::where('email', $email)->first();
+        if(!$anggota){
             return response([
                 'success' => false,
                 'message' => 'Login Gagal!',
                 'data' => 'Email belum terdaftar.'
             ],404);
         } else {
-            if (Hash::check($password, $user->password)){
-                $apiToken = base64_encode(Str::random(40));
+            if (Hash::check($password, $anggota->password)){
+                $apiToken = base64_encode(Str::random(15));
     
-                $user->update([
+                $anggota->update([
                     'api_token' => $apiToken
                 ]);
     
@@ -93,7 +134,7 @@ class AuthController extends Controller
                     'success' => true,
                     'message' => 'Login Berhasil!',
                     'data' => [
-                        'user' => $user,
+                        'user' => $anggota,
                         'api_token' => $apiToken
                     ]
                 ],201);
@@ -105,6 +146,6 @@ class AuthController extends Controller
                 ],404);
             }
         }
-        
     }
+
 }
