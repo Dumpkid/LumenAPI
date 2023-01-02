@@ -1,31 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Buku;
+use App\Models\Jenis_Buku;
 use Illuminate\Http\Request;
 
-class BukuController extends Controller
+class JenisBukuController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+    public function __construct()
+    {
+        //
+    }
 
     public function show()
     {
-        $buku = Buku::all();
-        $count = $buku->count();
+        $jenisbuku = Jenis_Buku::all();
+        $count = $jenisbuku->count();
         if ($count >= 1){
             return response([
                 'success' => true,
-                'message' => 'Data Buku',
-                'data' => $buku
+                'message' => 'Data Jenis Buku',
+                'data' => $jenisbuku
             ],200);
         } else {
             return response([
                 'success' => false,
-                'message' => 'Data Buku Kosong',
+                'message' => 'Data Jenis Buku Kosong',
                 'data' => ''
             ],404);
         }
@@ -33,13 +37,13 @@ class BukuController extends Controller
 
     public function showId($id)
     {
-        $buku = Buku::find($id);
+        $jenisbuku = Jenis_Buku::find($id);
 
-        if($buku){
+        if($jenisbuku){
             return response([
                 'success' => true,
                 'message' => 'Data ditemukan!',
-                'data' => $buku
+                'data' => $jenisbuku
             ],200);
         } else {
             return response([
@@ -52,52 +56,28 @@ class BukuController extends Controller
 
     public function create(Request $request)
     {
-        $kode_buku = substr(uniqid("BK"),0,5);
-        $judul = $request->input('judul');
-        $id_penulis = $request->input('id_penulis');
-        $id_penerbit = $request->input('id_penerbit');
-        $tahun_terbit = $request->input('tahun_terbit');
-        $edisi = $request->input('edisi');
-        $halaman = $request->input('halaman');
-        $id_jenis = $request->input('id_jenis');
-        $isbn = $request->input('isbn');
-        $harga = $request->input('harga');
-        $sumber = $request->input('sumber');
-        $kondisi = $request->input('kondisi');
-        $stok = $request->input('stok');
+        $jenis_buku = $request->input('jenis_buku');
 
-        $cek_isbn = Buku::where('isbn',$isbn)->first();
-        if ($cek_isbn){
+        $cek_jenis_buku = Jenis_Buku::where('jenis_buku',$jenis_buku)->first();
+        if ($cek_jenis_buku){
             return response([
                 'Success' => false,
-                'message' => 'No ISBN sudah terdaftar'
+                'message' => 'Jenis Buku sudah terdaftar'
             ],400);
         }else {
-            $buku = Buku::create([
-                'kode_buku' => $kode_buku,
-                'judul' => $judul,
-                'id_penulis' => $id_penulis,
-                'id_penerbit' => $id_penerbit,
-                'tahun_terbit' => $tahun_terbit,
-                'edisi' => $edisi,
-                'halaman' => $halaman,
-                'id_jenis' => $id_jenis,
-                'isbn' => $isbn,
-                'harga' => $harga,
-                'sumber' => $sumber,
-                'kondisi' => $kondisi,
-                'stok' => $stok
+            $tambah = Jenis_Buku::create([
+                'jenis_buku' => $jenis_buku,
             ]);
     
-            if ($buku){
+            if ($tambah){
                 return response([
                     'Success' => true,
-                    'message' => 'Buku berhasil ditambahkan!'
+                    'message' => 'Data berhasil ditambahkan!'
                 ],201);
             } else {
                 return response([
                     'Success' => false,
-                    'message' => 'Gagal menambah buku!'
+                    'message' => 'Gagal menambah data!'
                 ],400);
             }
         }
@@ -106,19 +86,19 @@ class BukuController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $buku = Buku::where('id_buku', $id)->first();
-        if (!$buku) {
+        $jenis_buku = Jenis_Buku::where('id_jenis', $id)->first();
+        if (!$jenis_buku) {
             return response([
             'success' => false,
             'message' => 'Data tidak ditemukan!',
             'data' => '',
             ],404);
         } else {
-            $buku->fill($input);
+            $jenis_buku->fill($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
-                'data' => $buku,
+                'data' => $jenis_buku,
             ],201);
         }
         
@@ -126,8 +106,8 @@ class BukuController extends Controller
 
     public function delete($id)
     {
-        $buku = Buku::find($id)->delete();
-        if ($buku){
+        $jenis_buku = Jenis_Buku::find($id)->delete();
+        if ($jenis_buku){
             return response([
                 'Success' => true,
                 'message' => 'Data berhasil dihapus!',

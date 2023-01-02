@@ -81,11 +81,20 @@ class AuthController extends Controller
 
     public function registrasi_anggota(Request $request)
     {
-        $kode_anggota = $request->input('kode_anggota');
+        $kode_anggota = substr(uniqid("AG"),0,5);
         $nama_anggota = $request->input('nama_anggota');
         $jenis_kelamin = $request->input('jenis_kelamin');
         $email = $request->input('email');
         $password = Hash::make($request->input('password'));
+
+        $cek_email = Anggota::where('email', $email)->first();
+        if ($cek_email){
+            return response([
+                'success' => false,
+                'message' => 'Registrasi Gagal!',
+                'data' => 'Email sudah digunakan.'
+            ],400);
+        }
 
         $register = Anggota::create([
             'kode_anggota' => $kode_anggota,

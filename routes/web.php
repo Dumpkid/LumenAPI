@@ -23,17 +23,44 @@ $router->get('/', function () use ($router) {
 
 $router->post('/daftar_petugas', 'AuthController@registrasi_petugas');
 $router->post('/login_petugas', 'AuthController@login_petugas');
+$router->post('/daftar_anggota', 'AuthController@registrasi_anggota');
+$router->post('/login_anggota', 'AuthController@login_anggota');
 
-$router->get('/petugas/{id}', 'PetugasController@show');
 
-$router->get('/buku', 'BukuController@show');
-$router->post('/buku', 'BukuController@create');
-$router->get('/buku/{id}', 'BukuController@showId');
-$router->delete('/buku/{id}', 'BukuController@delete');
-$router->put('/buku/{id}', 'BukuController@update');
+$router->group(['middleware' => 'role:petugas'], function () use ($router) {
+    $router->get('/petugas/{id}', 'PetugasController@show');
+    $router->post('/buku', 'BukuController@create');
+    $router->delete('/buku/{id}', 'BukuController@delete');
+    $router->put('/buku/{id}', 'BukuController@update');
+    $router->get('/anggota', 'AnggotaController@show');
+    $router->get('/anggota/{id}', 'AnggotaController@showId');
+    $router->put('/anggota/{id}', 'AnggotaController@update');
+    $router->delete('anggota/{id}', 'AnggotaController@delete');
+    $router->post('/jenis_buku', 'JenisBukuController@create');
+    $router->put('/jenis_buku/{id}', 'JenisBukuController@update');
+    $router->delete('/jenis_buku/{id}', 'JenisBukuController@delete');
+    $router->post('/rak', 'RakController@create');
+    $router->put('/rak/{id}', 'RakController@update');
+    $router->delete('/rak/{id}', 'RakController@delete');
+    $router->post('/penerbit', 'PenerbitController@create');
+    $router->put('/penerbit/{id}', 'PenerbitController@update');
+    $router->delete('/penerbit/{id}', 'PenerbitController@delete');
+    $router->post('/penulis', 'PenulisController@create');
+    $router->put('/penulis/{id}', 'PenulisController@update');
+    $router->delete('/penulis/{id}', 'PenulisController@delete');
+});
 
-$router->get('/anggota', 'AnggotaController@show');
-$router->get('/anggota/{id}', 'AnggotaController@showId');
-$router->put('/anggota/{id}', 'AnggotaController@update');
-$router->delete('anggota/{id}', 'AnggotaController@delete');
+$router->group(['middleware' => 'role:anggota,petugas'], function() use ($router) {
+    $router->get('/buku', 'BukuController@show');
+    $router->get('/buku/{id}', 'BukuController@showId');
+    $router->get('/rak', 'RakController@show');
+    $router->get('/rak/{id}', 'RakController@showId');
+    $router->get('/jenis_buku', 'JenisBukuController@show');
+    $router->get('/jenis_buku/{id}', 'JenisBukuController@showId');
+    $router->get('/penerbit', 'PenerbitController@show');
+    $router->get('/penerbit/{id}', 'PenerbitController@showId');
+    $router->get('/penulis', 'PenulisController@show');
+    $router->get('/penulis/{id}', 'PenulisController@showId');
+});
+
 

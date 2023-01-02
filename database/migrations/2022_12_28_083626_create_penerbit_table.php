@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('penerbit', function (Blueprint $table) {
-            $table->increments('id_penerbit');
+            $table->increments('id_penerbit')->unique();
             $table->string('nama_penerbit');
             $table->string('kota');
             $table->timestamps();
