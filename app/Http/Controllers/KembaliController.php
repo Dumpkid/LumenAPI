@@ -1,31 +1,36 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Buku;
+use App\Models\Buku_Kembali;
+use App\Models\Buku_Pinjam;
 use Illuminate\Http\Request;
 
-class BukuController extends Controller
+class KembaliController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+    public function __construct()
+    {
+        //
+    }
 
     public function show()
     {
-        $buku = Buku::all();
-        $count = $buku->count();
+        $kembali = Buku_Kembali::all();
+        $count = $kembali->count();
         if ($count >= 1){
             return response([
                 'success' => true,
-                'message' => 'Data Buku',
-                'data' => $buku
+                'message' => 'Data Buku Kembali',
+                'data' => $kembali
             ],200);
         } else {
             return response([
                 'success' => false,
-                'message' => 'Data Buku Kosong',
+                'message' => 'Data Buku Kembali Kosong',
                 'data' => ''
             ],404);
         }
@@ -33,13 +38,13 @@ class BukuController extends Controller
 
     public function showId($id)
     {
-        $buku = Buku::find($id);
+        $kembali = Buku_Kembali::find($id);
 
-        if($buku){
+        if($kembali){
             return response([
                 'success' => true,
                 'message' => 'Data ditemukan!',
-                'data' => $buku
+                'data' => $kembali
             ],200);
         } else {
             return response([
@@ -52,52 +57,44 @@ class BukuController extends Controller
 
     public function create(Request $request)
     {
-        $kode_buku = substr(uniqid("BK"),0,5);
-        $judul = $request->input('judul');
-        $id_penulis = $request->input('id_penulis');
-        $id_penerbit = $request->input('id_penerbit');
-        $tahun_terbit = $request->input('tahun_terbit');
-        $edisi = $request->input('edisi');
-        $halaman = $request->input('halaman');
-        $id_jenis = $request->input('id_jenis');
-        $isbn = $request->input('isbn');
-        $harga = $request->input('harga');
-        $sumber = $request->input('sumber');
-        $kondisi = $request->input('kondisi');
-        $id_pinjam = $request->input('id_pinjam');
+        $id_anggota = $request->input('id_anggota');
+        $id_buku = $request->input('id_buku');
+        $tgl_pengembalian = $request->input('tgl_pengembalian');
+        $telat_kembali = $request->input('telat_kembali');
+        $denda = $request->input('denda');
+        $id_petugas = $request->input('id_petugas');
 
-        $cek_isbn = Buku::where('isbn',$isbn)->first();
-        if ($cek_isbn){
+        $cek_pinjam = Buku_Pinjam::where('id_buku',$id_buku)->where('status_pinjam', 'Dipinjam')->first();
+        if (!$cek_pinjam){
             return response([
                 'Success' => false,
-                'message' => 'No ISBN sudah terdaftar'
+                'message' => 'Buku Belum dipinjam!'
             ],400);
         }else {
-            $buku = Buku::create([
-                'kode_buku' => $kode_buku,
-                'judul' => $judul,
-                'id_penulis' => $id_penulis,
-                'id_penerbit' => $id_penerbit,
-                'tahun_terbit' => $tahun_terbit,
-                'edisi' => $edisi,
-                'halaman' => $halaman,
-                'id_jenis' => $id_jenis,
-                'isbn' => $isbn,
-                'harga' => $harga,
-                'sumber' => $sumber,
-                'kondisi' => $kondisi,
-                'id_pinjam' => $id_pinjam
+            $tambah = Buku_Kembali::create([
+                'id_anggota' => $id_anggota,
+                'id_pinjam' => $cek_pinjam->id_pinjam,
+                'id_buku' => $id_buku,
+                'tgl_pengembalian' => $tgl_pengembalian,
+                'telat_kembali' => $telat_kembali,
+                'denda' => $denda,
+                'id_petugas' => $id_petugas,
             ]);
     
-            if ($buku){
+            if ($tambah){
+                $cek_pinjam->update([
+                    'status_pinjam' => 'Tersedia',
+                ]);
+
                 return response([
                     'Success' => true,
-                    'message' => 'Buku berhasil ditambahkan!'
+                    'message' => 'Data berhasil ditambahkan!'
                 ],201);
+
             } else {
                 return response([
                     'Success' => false,
-                    'message' => 'Gagal menambah buku!'
+                    'message' => 'Gagal menambah data!'
                 ],400);
             }
         }
@@ -106,19 +103,19 @@ class BukuController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $buku = Buku::where('id_buku', $id)->first();
-        if (!$buku) {
+        $kembali = Buku_Kembali::where('id_kembali', $id)->first();
+        if (!$kembali) {
             return response([
             'success' => false,
             'message' => 'Data tidak ditemukan!',
             'data' => '',
             ],404);
         } else {
-            $buku->fill($input);
+            $kembali->fill($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
-                'data' => $buku,
+                'data' => $kembali,
             ],201);
         }
         
@@ -126,8 +123,8 @@ class BukuController extends Controller
 
     public function delete($id)
     {
-        $buku = Buku::find($id)->delete();
-        if ($buku){
+        $kembali = Buku_Kembali::find($id)->delete();
+        if ($kembali){
             return response([
                 'Success' => true,
                 'message' => 'Data berhasil dihapus!',

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('buku_kembali', function (Blueprint $table) {
             $table->increments('id_kembali');
             $table->integer('id_anggota');
+            $table->integer('id_pinjam');
             $table->integer('id_buku');
             $table->date('tgl_pengembalian');
             $table->integer('telat_kembali');

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('harga');
             $table->enum('sumber', ['Pembelian', 'Hadiah']);
             $table->enum('kondisi',['Baik', 'Kurang Baik']);
-            $table->enum('status',['Tersedia', 'Dipinjam']);
+            $table->integer('id_pinjam');
             $table->timestamps();
         });
     }

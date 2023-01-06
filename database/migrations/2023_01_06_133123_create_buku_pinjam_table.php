@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('lama_pinjam');
             $table->date('tgl_kembali');
             $table->integer('id_petugas');
+            $table->enum('status_pinjam', ['Dipinjam', 'Tersedia']);
             $table->timestamps();
         });
     }
