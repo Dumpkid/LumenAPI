@@ -64,7 +64,7 @@ class BukuController extends Controller
         $harga = $request->input('harga');
         $sumber = $request->input('sumber');
         $kondisi = $request->input('kondisi');
-        $stok = $request->input('stok');
+        $status = $request->input('status');
 
         $cek_isbn = Buku::where('isbn',$isbn)->first();
         if ($cek_isbn){
@@ -86,7 +86,7 @@ class BukuController extends Controller
                 'harga' => $harga,
                 'sumber' => $sumber,
                 'kondisi' => $kondisi,
-                'stok' => $stok
+                'status' => $status
             ]);
     
             if ($buku){
