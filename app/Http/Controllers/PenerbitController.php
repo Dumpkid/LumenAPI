@@ -96,7 +96,7 @@ class PenerbitController extends Controller
             'data' => '',
             ],404);
         } else {
-            $penerbit->fill($input);
+            $penerbit->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
@@ -108,20 +108,22 @@ class PenerbitController extends Controller
 
     public function delete($id)
     {
-        $penerbit = Penerbit::find($id)->delete();
+        $penerbit = Penerbit::find($id);
         if ($penerbit){
-            return response([
-                'Success' => true,
-                'message' => 'Data berhasil dihapus!',
-                'data' => ''
-            ],200);
+            $hapus = $penerbit->delete();
+            if($hapus){
+                return response([
+                    'Success' => true,
+                    'message' => 'Data berhasil dihapus!',
+                    'data' => ''
+                ],200);
+            }
         } else {
             return response([
                 'Success' => false,
-                'message' => 'Gagal menghapus data!',
+                'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
         }
-        
     }
 }

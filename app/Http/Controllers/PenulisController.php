@@ -94,7 +94,7 @@ class PenulisController extends Controller
             'data' => '',
             ],404);
         } else {
-            $penulis->fill($input);
+            $penulis->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
@@ -106,20 +106,22 @@ class PenulisController extends Controller
 
     public function delete($id)
     {
-        $penulis = Penulis::find($id)->delete();
+        $penulis = Penulis::find($id);
         if ($penulis){
-            return response([
-                'Success' => true,
-                'message' => 'Data berhasil dihapus!',
-                'data' => ''
-            ],200);
+            $hapus = $penulis->delete();
+            if($hapus){
+                return response([
+                    'Success' => true,
+                    'message' => 'Data berhasil dihapus!',
+                    'data' => ''
+                ],200);
+            }
         } else {
             return response([
                 'Success' => false,
-                'message' => 'Gagal menghapus data!',
+                'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
         }
-        
     }
 }

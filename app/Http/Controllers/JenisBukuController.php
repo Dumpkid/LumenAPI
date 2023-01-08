@@ -94,7 +94,7 @@ class JenisBukuController extends Controller
             'data' => '',
             ],404);
         } else {
-            $jenis_buku->fill($input);
+            $jenis_buku->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
@@ -106,20 +106,22 @@ class JenisBukuController extends Controller
 
     public function delete($id)
     {
-        $jenis_buku = Jenis_Buku::find($id)->delete();
+        $jenis_buku = Jenis_Buku::find($id);
         if ($jenis_buku){
-            return response([
-                'Success' => true,
-                'message' => 'Data berhasil dihapus!',
-                'data' => ''
-            ],200);
+            $hapus = $jenis_buku->delete();
+            if($hapus){
+                return response([
+                    'Success' => true,
+                    'message' => 'Data berhasil dihapus!',
+                    'data' => ''
+                ],200);
+            }
         } else {
             return response([
                 'Success' => false,
-                'message' => 'Gagal menghapus data!',
+                'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
         }
-        
     }
 }

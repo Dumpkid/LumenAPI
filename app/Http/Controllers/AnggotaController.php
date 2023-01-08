@@ -61,7 +61,7 @@ class AnggotaController extends Controller
             'data' => '',
             ],404);
         } else {
-            $anggota->fill($input);
+            $anggota->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',

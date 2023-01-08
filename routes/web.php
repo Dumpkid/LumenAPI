@@ -54,10 +54,13 @@ $router->group(['middleware' => 'role:petugas'], function () use ($router) {
     $router->put('/peminjaman/{id}', 'PinjamController@update');
     $router->delete('/peminjaman/{id}', 'PinjamController@delete');
     $router->get('/pengembalian', 'KembaliController@show');
-    $router->get('/pengembalian/{id}',  'Kembaliontroller@showId');
+    $router->get('/pengembalian/{id}', 'KembaliController@showId');
     $router->post('/pengembalian', 'KembaliController@create');
     $router->put('/pengembalian/{id}', 'KembaliController@update');
     $router->delete('/pengembalian/{id}', 'KembaliController@delete');
+    $router->post('/katalog', 'KatalogController@create');
+    $router->put('/katalog/{id}', 'KatalogController@update');
+    $router->delete('/katalog/{id}', 'KatalogController@delete');
     
 });
 
@@ -72,6 +75,8 @@ $router->group(['middleware' => 'role:anggota,petugas'], function() use ($router
     $router->get('/penerbit/{id}', 'PenerbitController@showId');
     $router->get('/penulis', 'PenulisController@show');
     $router->get('/penulis/{id}', 'PenulisController@showId');
+    $router->get('/katalog', 'KatalogController@show');
+    $router->get('/katalog/{id}', 'KatalogController@showId');
 });
 
 

@@ -76,7 +76,7 @@ class PinjamController extends Controller
                 'id_buku' => $id_buku,
                 'tgl_pinjam' => $tgl_pinjam,
                 'lama_pinjam' => $lama_pinjam,
-                'tg_kembali' => $tgl_kembali,
+                'tgl_kembali' => $tgl_kembali,
                 'id_petugas' => $id_petugas,
             ]);
     
@@ -105,7 +105,7 @@ class PinjamController extends Controller
             'data' => '',
             ],404);
         } else {
-            $pinjam->fill($input);
+            $pinjam->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
@@ -117,20 +117,22 @@ class PinjamController extends Controller
 
     public function delete($id)
     {
-        $pinjam = Buku_Pinjam::find($id)->delete();
+        $pinjam = Buku_Pinjam::find($id);
         if ($pinjam){
-            return response([
-                'Success' => true,
-                'message' => 'Data berhasil dihapus!',
-                'data' => ''
-            ],200);
+            $hapus = $pinjam->delete();
+            if($hapus){
+                return response([
+                    'Success' => true,
+                    'message' => 'Data berhasil dihapus!',
+                    'data' => ''
+                ],200);
+            }
         } else {
             return response([
                 'Success' => false,
-                'message' => 'Gagal menghapus data!',
+                'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
         }
-        
     }
 }

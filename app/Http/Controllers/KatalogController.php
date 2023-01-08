@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Rak;
+
+use App\Models\Katalog;
 use Illuminate\Http\Request;
 
-class RakController extends Controller
+class KatalogController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -18,18 +19,18 @@ class RakController extends Controller
 
     public function show()
     {
-        $rak = Rak::all();
-        $count = $rak->count();
+        $katalog = Katalog::all();
+        $count = $katalog->count();
         if ($count >= 1){
             return response([
                 'success' => true,
-                'message' => 'Data Rak',
-                'data' => $rak
+                'message' => 'Data Katalog',
+                'data' => $katalog
             ],200);
         } else {
             return response([
                 'success' => false,
-                'message' => 'Data Rak Kosong',
+                'message' => 'Data Katalog Kosong',
                 'data' => ''
             ],404);
         }
@@ -37,13 +38,13 @@ class RakController extends Controller
 
     public function showId($id)
     {
-        $rak = Rak::find($id);
+        $katalog = Katalog::find($id);
 
-        if($rak){
+        if($katalog){
             return response([
                 'success' => true,
                 'message' => 'Data ditemukan!',
-                'data' => $rak
+                'data' => $katalog
             ],200);
         } else {
             return response([
@@ -56,21 +57,21 @@ class RakController extends Controller
 
     public function create(Request $request)
     {
-        $nama_rak = $request->input('nama_rak');
-        $lokasi_rak = $request->input('lokasi_rak');
         $id_buku = $request->input('id_buku');
+        $id_pinjam = $request->input('id_pinjam');
+        $id_rak = $request->input('id_rak');
 
-        $cek_rak = Rak::where('nama_rak',$nama_rak)->where('id_buku', $id_buku)->first();
-        if ($cek_rak){
+        $cek_katalog = Katalog::where('id_buku',$id_buku)->first();
+        if ($cek_katalog){
             return response([
                 'Success' => false,
-                'message' => 'Rak sudah terdaftar'
+                'message' => 'Buku sudah terdaftar di Katalog!'
             ],400);
         }else {
-            $tambah = Rak::create([
-                'nama_rak' => $nama_rak,
-                'lokasi_rak' => $lokasi_rak,
+            $tambah = Katalog::create([
                 'id_buku' => $id_buku,
+                'id_pinjam' => $id_pinjam,
+                'id_rak' => $id_rak,
             ]);
     
             if ($tambah){
@@ -90,19 +91,19 @@ class RakController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $rak = Rak::where('id_rak', $id)->first();
-        if (!$rak) {
+        $katalog = Katalog::where('id_katalog', $id)->first();
+        if (!$katalog) {
             return response([
             'success' => false,
             'message' => 'Data tidak ditemukan!',
             'data' => '',
             ],404);
         } else {
-            $rak->update($input);
+            $katalog->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
-                'data' => $rak,
+                'data' => $katalog,
             ],201);
         }
         
@@ -110,9 +111,9 @@ class RakController extends Controller
 
     public function delete($id)
     {
-        $rak = Rak::find($id);
-        if ($rak){
-            $hapus = $rak->delete();
+        $katalog = Katalog::find($id);
+        if ($katalog){
+            $hapus = $katalog->delete();
             if($hapus){
                 return response([
                     'Success' => true,

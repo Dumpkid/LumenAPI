@@ -52,7 +52,7 @@ class BukuController extends Controller
 
     public function create(Request $request)
     {
-        $kode_buku = substr(uniqid("BK"),0,5);
+        $kode_buku = "BK".random_int(1,100);
         $judul = $request->input('judul');
         $id_penulis = $request->input('id_penulis');
         $id_penerbit = $request->input('id_penerbit');
@@ -64,7 +64,7 @@ class BukuController extends Controller
         $harga = $request->input('harga');
         $sumber = $request->input('sumber');
         $kondisi = $request->input('kondisi');
-        $id_pinjam = $request->input('id_pinjam');
+        // $id_pinjam = $request->input('id_pinjam');
 
         $cek_isbn = Buku::where('isbn',$isbn)->first();
         if ($cek_isbn){
@@ -86,7 +86,7 @@ class BukuController extends Controller
                 'harga' => $harga,
                 'sumber' => $sumber,
                 'kondisi' => $kondisi,
-                'id_pinjam' => $id_pinjam
+                // 'id_pinjam' => $id_pinjam
             ]);
     
             if ($buku){
@@ -114,7 +114,7 @@ class BukuController extends Controller
             'data' => '',
             ],404);
         } else {
-            $buku->fill($input);
+            $buku->update($input);
             return response([
                 'success' => true,
                 'message' => 'Update berhasil',
@@ -126,20 +126,22 @@ class BukuController extends Controller
 
     public function delete($id)
     {
-        $buku = Buku::find($id)->delete();
+        $buku = Buku::find($id);
         if ($buku){
-            return response([
-                'Success' => true,
-                'message' => 'Data berhasil dihapus!',
-                'data' => ''
-            ],200);
+            $hapus = $buku->delete();
+            if($hapus){
+                return response([
+                    'Success' => true,
+                    'message' => 'Data berhasil dihapus!',
+                    'data' => ''
+                ],200);
+            }
         } else {
             return response([
                 'Success' => false,
-                'message' => 'Gagal menghapus data!',
+                'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
         }
-        
     }
 }

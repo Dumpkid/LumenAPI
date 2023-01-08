@@ -15,14 +15,14 @@ class AuthController extends Controller
         $nama_petugas = $request->input('nama_petugas');
         $jabatan = $request->input('jabatan');
         $alamat_petugas = $request->input('alamat_petugas');
-        $email = $request->input('email');
+        $username = $request->input('username');
         $password = Hash::make($request->input('password'));
 
         $register = Petugas::create([
             'nama_petugas' => $nama_petugas,
             'jabatan' => $jabatan,
             'alamat_petugas' => $alamat_petugas,
-            'email' => $email,
+            'username' => $username,
             'password' => $password,
         ]);
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
 
     public function registrasi_anggota(Request $request)
     {
-        $kode_anggota = substr(uniqid("AG"),0,5);
+        $kode_anggota = "AG".random_int(1,100);
         $nama_anggota = $request->input('nama_anggota');
         $jenis_kelamin = $request->input('jenis_kelamin');
         $email = $request->input('email');

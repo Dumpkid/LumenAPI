@@ -10,4 +10,9 @@ class Rak extends Model
     protected $fillable = ['nama_rak', 'lokasi_rak', 'id_buku'];
     protected $primaryKey = 'id_rak';
 
+    // public function Buku()
+    // {
+    //     return $this->hasMany(Buku::class, 'id_buku');
+    // }
+
 }
