@@ -72,17 +72,20 @@ class AnggotaController extends Controller
 
     public function delete($id)
     {
-        $anggota = Anggota::find($id)->delete();
+        $anggota = Anggota::find($id);
         if ($anggota){
-            return response([
-                'Success' => true,
-                'message' => 'Data berhasil dihapus!',
-                'data' => ''
-            ],200);
+            $hapus = $anggota->delete();
+            if($hapus){
+                return response([
+                    'Success' => true,
+                    'message' => 'Data berhasil dihapus!',
+                    'data' => ''
+                ],200);
+            }
         } else {
             return response([
                 'Success' => false,
-                'message' => 'Data tidak ditemukan! ',
+                'message' => 'Data tidak ditemukan!',
                 'data' => ''
             ],404);
         }

@@ -52,7 +52,7 @@ class BukuController extends Controller
 
     public function create(Request $request)
     {
-        $kode_buku = "BK".random_int(1,100);
+        $kode_buku = "BK".random_int(1,500);
         $judul = $request->input('judul');
         $id_penulis = $request->input('id_penulis');
         $id_penerbit = $request->input('id_penerbit');
